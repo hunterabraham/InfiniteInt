@@ -1,3 +1,14 @@
+///////////////////////////////////////////////////////////////////////////////
+// Main File:        demo.cpp
+// This File:        InfiniteInt.cpp
+// Semester:         CS 368 Spring 2020
+//
+// Author:           Hunter Abraham
+// Email:            hjabraham@wisc.edu
+// CS Login:         habraham
+// Student ID:       9079608908
+////////////////////////////////////////////////////////////////////////////////
+
 #include "InfiniteInt.h"
 #include <vector>
 #include <algorithm>
@@ -21,11 +32,12 @@ InfiniteInt& InfiniteInt::operator+(const InfiniteInt &rhs){
         smallit = (*rhs.getDigits()).rbegin();
         smallend = (*rhs.getDigits()).rend();
     }
-    // add the smaller one, starting from the back
+    // add the smaller one, index by index, starting from the back
 	vector<unsigned int>::reverse_iterator it;
 	for (it = sum->rbegin(); smallit != smallend; ++it, ++smallit) {
         *it += *smallit;
 	}
+	// go over the summed vector, carry any values necessary
 	for (it = sum->rbegin(); it != sum->rend(); ++it) {
 		if (*it > 9) {
 			if (it != sum->rend() &&  it == --sum->rend()) {
@@ -53,8 +65,8 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 	vector<unsigned int>::const_reverse_iterator smallit;
     vector<unsigned int>::const_reverse_iterator smallend;
 	vector<int>* sum;	
-    // copy the larger vector
     sum = new vector<int>();
+	// deep copy left vector into sum vector
 	for (vector<unsigned int>::iterator i = this->getDigits()->begin(); i != this->getDigits()->end(); ++i) {
 		sum->push_back(static_cast<int>(*i));
 	}
@@ -65,11 +77,12 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 		return *(new InfiniteInt(static_cast<unsigned long long int>(0)));
 	}
 
-    // add the smaller one, starting from the back
+    // subtract the right vector, starting from the back
 	for (vector<int>::reverse_iterator it = sum->rbegin(); smallit != smallend; ++it, ++smallit) {
 		*it -= *smallit;
 	}
 
+	// remove any negative values by performing borrows
 	unsigned int count = 0;
 	for (vector<int>::reverse_iterator it = sum->rbegin(); it != sum->rend(); ++it) {
 		count++;
@@ -84,6 +97,7 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 		}	
 	}	
 	
+	// remove any leading 0s
 	vector<unsigned int>* retVec = new vector<unsigned int>();
 	for (vector<int>::iterator i = sum->begin(); i != sum->end(); ++i) {
 		retVec->push_back(static_cast<unsigned int>(*i));
@@ -100,6 +114,7 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 		retVec->insert(retVec->begin(), 0);
 	}
 	
+
 	reverse(retVec->begin(), retVec->end());
 	InfiniteInt* ret = new InfiniteInt(retVec);
 	
@@ -159,6 +174,7 @@ std::ostream& operator <<(std::ostream& os, const InfiniteInt& rhs) {
 std::istream& operator >>(std::istream& is, InfiniteInt& rhs) {
 	string s;
 	is >> s;
+	// make sure entry is valid
 	for(unsigned int i = 0; i < s.length(); i++) {
       if(!(((s[i] >= '0') && (s[i] <= '9')) || (s[i] == ' '))) {
 		cout << "Invalid entry" << endl;
@@ -182,6 +198,7 @@ bool operator <(const InfiniteInt& lhs, const InfiniteInt& rhs) {
 	vector<unsigned int>::iterator rhsEnd = lhs.getDigits()->end();
 	vector<unsigned int>::iterator lhsIterator;
 	vector<unsigned int>::iterator rhsIterator;
+	// iterate from the front. if any value is smaller, return true. if any value is larger, return false
 	for (lhsIterator = lhsBegin, rhsIterator = rhsBegin; (lhsIterator != lhsEnd) && (rhsIterator != rhsEnd); ++lhsIterator, ++rhsIterator) {
 		if (*lhsIterator < *rhsIterator) {
 			return true;
@@ -204,6 +221,7 @@ bool operator >(const InfiniteInt& lhs, const InfiniteInt& rhs) {
 	vector<unsigned int>::iterator rhsEnd = lhs.getDigits()->end();
 	vector<unsigned int>::iterator lhsIterator;
 	vector<unsigned int>::iterator rhsIterator;
+	// iterate from the front, if any value is larger, return true. if any value is smaller, return false
 	for (lhsIterator = lhsBegin, rhsIterator = rhsBegin; (lhsIterator != lhsEnd) && (rhsIterator != rhsEnd); ++lhsIterator, ++rhsIterator) {
 		if (*lhsIterator > *rhsIterator) {
 			return true;
@@ -241,6 +259,7 @@ bool operator ==(const InfiniteInt& lhs, const InfiniteInt& rhs) {
 	vector<unsigned int>::iterator rhsEnd = lhs.getDigits()->end();
 	vector<unsigned int>::iterator lhsIterator;
 	vector<unsigned int>::iterator rhsIterator;
+	// if any value is unequal, return false
 	for (lhsIterator = lhsBegin, rhsIterator = rhsBegin; (lhsIterator != lhsEnd) && (rhsIterator != rhsEnd); ++lhsIterator, ++rhsIterator) {
 		if (*lhsIterator != *rhsIterator) {
 			return false;
@@ -261,6 +280,7 @@ bool operator !=(const InfiniteInt& lhs, const InfiniteInt& rhs) {
 	vector<unsigned int>::iterator rhsEnd = lhs.getDigits()->end();
 	vector<unsigned int>::iterator lhsIterator;
 	vector<unsigned int>::iterator rhsIterator;
+	// if any value is unequal, return true
 	for (lhsIterator = lhsBegin, rhsIterator = rhsBegin; (lhsIterator != lhsEnd) && (rhsIterator != rhsEnd); ++lhsIterator, ++rhsIterator) {
 		if (*lhsIterator != *rhsIterator) {
 			return true;
