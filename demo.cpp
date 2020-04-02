@@ -61,7 +61,7 @@ int main() {
 	std::cout << "n15 should be 0: " << InfiniteInt(2) - InfiniteInt(998) << std::endl;
 	std::cout << "n15 should be 996: " << InfiniteInt(998) - InfiniteInt(2) << std::endl;	
 	std::cout << "n15 shoudl be 0: " << InfiniteInt(971) - InfiniteInt(987) << std::endl;
-
+	std::cout << "n15 should be 0: " << InfiniteInt(971) - InfiniteInt(971) << std::endl;
 
 	std::cout << std::endl << "****** INCREMENT AND DECREMENT ******" << std::endl << std::endl;
 	std::cout << "n13 should be 10114: " << ++n13 << std::endl;

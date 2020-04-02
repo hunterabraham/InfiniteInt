@@ -21,7 +21,6 @@ InfiniteInt& InfiniteInt::operator+(const InfiniteInt &rhs){
         smallit = (*rhs.getDigits()).rbegin();
         smallend = (*rhs.getDigits()).rend();
     }
-	bool flag = false;
     // add the smaller one, starting from the back
 	vector<unsigned int>::reverse_iterator it;
 	for (it = sum->rbegin(); smallit != smallend; ++it, ++smallit) {
@@ -36,10 +35,7 @@ InfiniteInt& InfiniteInt::operator+(const InfiniteInt &rhs){
 			} else {
 				*it = *it % 10;
 				*(it + 1) += 1;
-				flag = true;
 			}
-		} else {
-			flag = false;
     	}
 	}	
 	InfiniteInt* ret = new InfiniteInt(sum);
@@ -69,13 +65,12 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 		return *(new InfiniteInt(static_cast<unsigned long long int>(0)));
 	}
 
-    bool flag = false;
     // add the smaller one, starting from the back
 	for (vector<int>::reverse_iterator it = sum->rbegin(); smallit != smallend; ++it, ++smallit) {
 		*it -= *smallit;
 	}
 
-	int count = 0;
+	unsigned int count = 0;
 	for (vector<int>::reverse_iterator it = sum->rbegin(); it != sum->rend(); ++it) {
 		count++;
 		if (*it < 0) {
@@ -85,7 +80,6 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 			} else {
 				*it = *it + 10;
 				*(it + 1) -= 1;
-				flag = true;
 			}
 		}	
 	}	
@@ -95,12 +89,17 @@ InfiniteInt& InfiniteInt::operator -(const InfiniteInt &rhs) {
 		retVec->push_back(static_cast<unsigned int>(*i));
 	}
 
-	int i = 0;
-	while ((*retVec)[i] == 0) {
+	unsigned int i = 0;
+	while ((*retVec)[i] == 0 && i < retVec->size()) {
 		i++;
 	}
+
 	reverse(retVec->begin(), retVec->end());
 	retVec->resize(retVec->size() - i);
+	if (retVec->size() == 0) {
+		retVec->insert(retVec->begin(), 0);
+	}
+	
 	reverse(retVec->begin(), retVec->end());
 	InfiniteInt* ret = new InfiniteInt(retVec);
 	
@@ -160,8 +159,8 @@ std::ostream& operator <<(std::ostream& os, const InfiniteInt& rhs) {
 std::istream& operator >>(std::istream& is, InfiniteInt& rhs) {
 	string s;
 	is >> s;
-	for(int i = 0; i < s.length(); i++) {
-      if(!(s[i] >= '0' && s[i] <= '9' || s[i] == ' ')) {
+	for(unsigned int i = 0; i < s.length(); i++) {
+      if(!(((s[i] >= '0') && (s[i] <= '9')) || (s[i] == ' '))) {
 		cout << "Invalid entry" << endl;
 		return is;
 	  }
