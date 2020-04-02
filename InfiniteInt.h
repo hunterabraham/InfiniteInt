@@ -5,7 +5,6 @@
 #include<iostream>
 #include<algorithm>
 class InfiniteInt {
-
 	friend std::ostream& operator <<(std::ostream&, const InfiniteInt&);
 	friend std::istream& operator >>(std::istream&, InfiniteInt&);
 	friend bool operator <(const InfiniteInt&, const InfiniteInt&);
@@ -25,24 +24,27 @@ class InfiniteInt {
 		std::vector<unsigned int>* getDigits() const {
 			return this->digits;
 		}
-
 		/**
 		 * Create a default constructor for InfiniteInt that sets the value of your InfiniteInt to
-		 * a default value of 0.i
+		 * a default value of 0.
 		 */
 		InfiniteInt() {
 			digits = new std::vector<unsigned int>;
 			digits->push_back(0);
 		}
-		
+			
 
 		/**
 		 * InfiniteInt(unsigned long long val) Create a parameterized constructor for InfiniteInt that
 		 * sets the starting value to val.
 		 * @param val - the value of digits
-	     */
+		 */
 		InfiniteInt(unsigned long long val) {
 			digits = new std::vector<unsigned int>;
+			if (val == 0) {
+				digits->push_back(0);
+				return;
+			}
 			while (val != 0) {
 				int num = val % 10;
 				digits->push_back(num);
@@ -57,10 +59,7 @@ class InfiniteInt {
 		 * @param new_digits - a vector of new digits that will make the digits vector
 		 */
 		explicit InfiniteInt(std::vector<unsigned int>* new_digits) {
-			digits = new std::vector<unsigned int>;
-			for (std::vector<unsigned int>::iterator it = new_digits->begin(); it < new_digits->end(); ++it) {
-				digits->push_back(*it);
-			}
+			digits = new_digits;
 		}
 
 
@@ -72,11 +71,12 @@ class InfiniteInt {
 		  * @param obj - the address to the InfiniteInt
 		  */
 		InfiniteInt(const InfiniteInt &obj) {
-			std::vector<unsigned int>* new_digits = obj.getDigits();
-			digits = new std::vector<unsigned int>;
-			for (std::vector<unsigned int>::iterator it = new_digits->begin(); it < new_digits->end(); ++it) {
-				digits->push_back(*it);
+			this->digits = new std::vector<unsigned int>;
+			for (std::vector<unsigned int>::iterator itr = obj.getDigits()->begin(); itr != obj.getDigits()->end(); ++itr) {
+				this->digits->push_back(*itr);
 			}
+	
+//			*(this->digits) = *(obj.getDigits());
 		}
 		
 
