@@ -40,8 +40,7 @@ class InfiniteInt {
 		 * Create a default constructor for InfiniteInt that sets the value of your InfiniteInt to
 		 * a default value of 0.
 		 */
-		InfiniteInt() {
-			digits = new std::vector<unsigned int>;
+		InfiniteInt() : digits(new std::vector<unsigned int>), radix(10) {
 			digits->push_back(0);
 		}
 			
@@ -51,8 +50,7 @@ class InfiniteInt {
 		 * sets the starting value to val.
 		 * @param val - the value of digits
 		 */
-		InfiniteInt(unsigned long long val) {
-			digits = new std::vector<unsigned int>;
+		InfiniteInt(unsigned long long val): digits(new std::vector<unsigned int>), radix(10) {
 			if (val == 0) {
 				digits->push_back(0);
 				return;
@@ -70,9 +68,7 @@ class InfiniteInt {
 		 * equal to the digits pointed to by new_digits.
 		 * @param new_digits - a vector of new digits that will make the digits vector
 		 */
-		explicit InfiniteInt(std::vector<unsigned int>* new_digits) {
-			digits = new_digits;
-		}
+		explicit InfiniteInt(std::vector<unsigned int>* new_digits): digits(new_digits), radix(10) {}
 
 
 		/**
@@ -82,13 +78,10 @@ class InfiniteInt {
 		  * 
 		  * @param obj - the address to the InfiniteInt
 		  */
-		InfiniteInt(const InfiniteInt &obj) {
-			this->digits = new std::vector<unsigned int>;
+		InfiniteInt(const InfiniteInt &obj):digits(new std::vector<unsigned int>), radix(10) {
 			for (std::vector<unsigned int>::iterator itr = obj.getDigits()->begin(); itr != obj.getDigits()->end(); ++itr) {
 				this->digits->push_back(*itr);
 			}
-	
-//			*(this->digits) = *(obj.getDigits());
 		}
 		
 
